@@ -1,0 +1,17 @@
+.chart-master-container,  .chart-master-container div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 98vw;
+    margin-top: 20px;
+}
+
+select {
+    height: 32px;
+    width: 310px;
+    border-radius: .5rem;
+    border: 1px solid #ccc;
+    outline: none;
+    padding: 5px;
+}

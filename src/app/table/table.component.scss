@@ -1,0 +1,44 @@
+.master-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+table {
+    width: 70%;
+    text-align: center;
+}
+
+tr {
+    border-bottom: 1rem solid transparent;
+}
+
+td, th {
+    padding: 10px;
+}
+
+input, select {
+    height: 20px;
+    width: 300px;
+    border-radius: .5rem;
+    border: 1px solid #ccc;
+    outline: none;
+    padding: 5px;
+}
+
+select {
+    height: 32px;
+    width: 310px;
+}
+
+.highlighter-on {
+    background: #8627ea;
+    color: #f1dd7c;
+}
+
+.search-error {
+    color: #f54242;
+}

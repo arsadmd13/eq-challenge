@@ -1,0 +1,27 @@
+<div class="master-container">
+    <div class="line-chart daily-stats" id="daily-stats-chart" *ngIf="!isLoading">
+      <div>
+        <span>Stats Daily Chart</span>
+        <!-- <div class="records-input">
+            <input  type="text" placeholder="Search">
+            <button></button>
+        </div> -->
+        <apx-chart #dailyEventsChart
+            [series]="dailyStatsChartOptions.series"
+            [chart]="dailyStatsChartOptions.chart"
+            [yaxis]="dailyStatsChartOptions.yaxis"
+            [xaxis]="dailyStatsChartOptions.xaxis"
+            [labels]="dailyStatsChartOptions.labels"
+            [stroke]="dailyStatsChartOptions.stroke"
+            [plotOptions]="dailyStatsChartOptions.plotOptions"
+            [markers]="dailyStatsChartOptions.markers"
+            [fill]="dailyStatsChartOptions.fill"
+            [tooltip]="dailyStatsChartOptions.tooltip"
+        ></apx-chart>
+      </div>
+      <div class="info">
+        <small>Click on a datapoint to know more.</small>
+      </div>
+    </div>
+    <app-spinner *ngIf="isLoading"></app-spinner>
+</div>

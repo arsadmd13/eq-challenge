@@ -1,0 +1,30 @@
+<!-- <p>map works!</p> -->
+<div class="map-master-container">
+    <select [formControl]="mapType">
+        <option value="gm">Google Map</option>
+        <option value="lm">Leaflet Map</option>
+    </select>
+    <div 
+        [ngClass]="mapType.value === 'gm' ? 'hidden' : ''"
+        class="map-container">
+        <div class="map-frame">
+            <div id="map"></div>
+        </div>
+    </div>
+    <google-map 
+        #GoogleMap 
+        [ngClass]="mapType.value === 'lm' ? 'hidden' : ''"
+        [zoom]="google_map_zoom"
+        [center]="google_map_center"
+        [options]="google_map_options">
+        <map-marker-clusterer [imagePath]="markerClustererImagePath">
+            <map-marker *ngFor="let marker of google_map_markers"
+                    [position]="marker.position"
+                    [label]="marker.label"
+                    [icon]="marker.icon"
+            ></map-marker>
+        </map-marker-clusterer>
+    </google-map>
+</div>
+
+

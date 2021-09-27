@@ -1,0 +1,11 @@
+.home-container {
+    height: calc(100vh - 57px);
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    span {
+        font-size: larger;
+    }
+}

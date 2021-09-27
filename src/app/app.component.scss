@@ -1,0 +1,23 @@
+.server-loader {
+    height: calc(100vh - 100px);
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        width: 40%;
+
+        @media screen and (max-width: 500px) {
+            width: 65%;
+        }
+
+        @media screen and (max-width: 500px) {
+            width: 65%;
+        }
+
+        @media screen and (min-width: 990px) {
+            width: 30%;
+        }
+    }
+}

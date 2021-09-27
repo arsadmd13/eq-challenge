@@ -1,0 +1,14 @@
+<div class="chart-master-container">
+    <div *ngIf="!fromRoute">
+        <select [formControl]="dataType">
+            <option value="eh">Events/Hourly</option>
+            <option value="ed">Events/Daily</option>
+            <option value="sd">Stats/Daily</option>
+        </select>
+        <div>
+            <app-events *ngIf="dataType.value === 'eh' || dataType.value === 'ed'" [dataType]="dataType.value"></app-events>
+            <app-stats *ngIf="dataType.value === 'sh' || dataType.value === 'sd'" [dataType]="dataType.value"></app-stats>
+        </div>
+    </div>
+    <router-outlet *ngIf="fromRoute"></router-outlet>
+</div>

@@ -1,0 +1,37 @@
+<div class="nav-master-container" [ngClass]="rateLimited ? 'rate-limited' : ''">
+    <div class="nav-container">
+        <div class="left-container">
+            <span class="brand nav">EQ-Challenge</span>
+        </div>
+        <div class="right-container">
+            <div class="nav-content">
+                <a routerLink='/chart' class="nav">Chart</a>
+                <a routerLink="/table" class="nav">Table</a>
+                <a routerLink="/map" class="nav">Map</a>
+            </div>
+            <div class="nav-ham-container">
+                <button class="nav-ham-button">Menu</button>
+                <div class="nav-drop-menu">
+                    <a routerLink="/chart" class="nav-drop-item nav">
+                        Chart
+                    </a>
+                    <a routerLink="/table" class="nav-drop-item nav">
+                        Table
+                    </a>
+                    <a routerLink="/map" class="nav-drop-item nav">
+                        Map
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="info-conatiner" *ngIf="rateLimited">
+        <p>
+            Oops! Too many requests. Wait till 
+            <cd-timer format="hms" [countdown]="true" [startTime]="remainingTime" (onComplete)="handleCooldownPeriodOverEvent($event)"></cd-timer>
+            <!-- <countdown #cd [config]="countdownConfig" (event)="handleCooldownPeriodOverEvent($event)"></countdown> -->
+        </p>
+    </div>
+</div>
+
+<!-- 00:{{getRemainingTime()}} -->

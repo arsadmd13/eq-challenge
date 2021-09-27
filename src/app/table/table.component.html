@@ -1,0 +1,21 @@
+<div class="master-container">
+    <select [formControl]="dataType" [ngClass]="isLoading ? 'field-disabled' : ''">
+        <option value="eh">Events/Hourly</option>
+        <option value="ed">Events/Daily</option>
+        <option value="sh">Stats/Hourly</option>
+        <option value="sd">Stats/Daily</option>
+        <option value="poi">POI</option>
+    </select>
+    <input  *ngIf="!isLoading" type="text" placeholder="Search" [formControl]="searchField">
+    <small *ngIf="showSearchErr" class="search-error">No data found for the search query!</small>
+    <table  cellspacing="0" cellpadding="0" *ngIf="!isLoading">
+        <tr>
+            <th *ngFor="let header of tableHeaders">{{header}}</th>
+        </tr>
+        <tr *ngFor="let data of tableData; let i = index;" id="data{{i}}">
+            <td *ngFor="let dataContent of data">{{dataContent}}</td>
+        </tr>
+    </table>
+    <!-- <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "ball-atom" [fullScreen] = "false"><p style="color: white" > Loading... </p></ngx-spinner> -->
+    <app-spinner *ngIf="isLoading"></app-spinner>
+</div>
