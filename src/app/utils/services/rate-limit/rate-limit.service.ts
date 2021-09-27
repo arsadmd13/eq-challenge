@@ -12,7 +12,7 @@ export class RateLimitService {
 
   private isApiRateLimitedVal = true;
   private isSeverRejectingRequestsVal = false;
-  cooldownTimeVal = 0;
+  private cooldownTimeVal = 0;
 
   get isApiRateLimited() {
     return this.isApiRateLimitedVal;
@@ -45,19 +45,5 @@ export class RateLimitService {
       limited: this.isSeverRejectingRequestsVal,
       time: this.cooldownTimeVal
     })
-    // if(status) {
-    //   let $ = this;
-    //   // let interval = setInterval(() => {
-    //   //   this.cooldownTimeVal--;
-    //   //   if(this.cooldownTimeVal <= 0) {
-    //   //     this.setRateLimitData(false, 0);
-    //   //     clearInterval(interval);
-    //   //   }
-    //   //   console.log(this.cooldownTimeVal)
-    //   // }, 1000)
-    //   this.myOtherVar = setInterval(() => {
-    //     this.countDown();
-    //   }, 1000);
-    // }
   }
 }

@@ -27,6 +27,9 @@ export class ChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(this.router.url === '/chart' || this.router.url === '/') {
+      this.fromRoute = false;
+    }
   }
 
 }
