@@ -345,7 +345,6 @@ export class EventsComponent implements OnInit {
         },
         events: {
           markerClick: function(event: any, chartContext: any, config: any) {
-            console.log(event, chartContext, config)
             if(config['dataPointIndex'] != -1) {
               let selectedDate = $.hourlyEventsChartOptions['series'][0]['data'][config['dataPointIndex']][0];
               // Default method
@@ -563,7 +562,6 @@ export class EventsComponent implements OnInit {
     this.eventsWithStatsChartOptions['series'][3]['data'] = [];
     fetchMethod.subscribe(
       (res: any) => {
-        console.log('data')
         res.forEach((data: any) => {
           let date = new Date(data.date);
           date.toLocaleString('en-US', { timeZone: "UTC" })
@@ -587,7 +585,6 @@ export class EventsComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.dataType && changes.dataType.currentValue 
         && changes.dataType.currentValue !== changes.dataType.previousValue) {
-          console.log("HHS", changes)
       this.initChart();
     }
   }
