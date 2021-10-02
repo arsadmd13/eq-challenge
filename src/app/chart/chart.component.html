@@ -4,9 +4,11 @@
             <option value="eh">Events/Hourly</option>
             <option value="ed">Events/Daily</option>
             <option value="sd">Stats/Daily</option>
+            <option value="esh">Events/Stats/Hourly</option>
+            <option value="esd">Events/Stats/Daily</option>
         </select>
         <div>
-            <app-events *ngIf="dataType.value === 'eh' || dataType.value === 'ed'" [dataType]="dataType.value"></app-events>
+            <app-events *ngIf="dataType.value === 'eh' || dataType.value === 'ed' || dataType.value === 'esh' || dataType.value === 'esd'" [dataType]="dataType.value"></app-events>
             <app-stats *ngIf="dataType.value === 'sh' || dataType.value === 'sd'" [dataType]="dataType.value"></app-stats>
         </div>
     </div>

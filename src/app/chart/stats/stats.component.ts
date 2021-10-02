@@ -1,17 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { ChartComponent } from 'ng-apexcharts';
 import { DataService } from 'src/app/utils/services/data/data.service';
-import { EventsService } from 'src/app/utils/services/events/events.service';
 import { StatsService } from 'src/app/utils/services/stats/stats.service';
-
-interface hourlyStats {
-  "date": string,
-  "hour": number,
-  "impressions": number,
-  "clicks": number,
-  "revenue": string
-}
 
 @Component({
   selector: 'app-stats',
@@ -26,11 +16,7 @@ export class StatsComponent implements OnInit {
   @Input()
   dataType!: string;
 
-  constructor(private statsService: StatsService,
-              private dataService: DataService,
-              private cdref: ChangeDetectorRef) { 
-    
-  }
+  constructor(private statsService: StatsService) {}
 
   public dailyStatsChartOptions: any;
 
@@ -78,7 +64,7 @@ export class StatsComponent implements OnInit {
         }
       },
       fill: {
-        // opacity: [0.85, 0.25, 1],
+        opacity: [0.85, 0.25, 1],
         gradient: {
           inverseColors: false,
           shade: "light",
@@ -86,38 +72,91 @@ export class StatsComponent implements OnInit {
           stops: [0, 100, 100, 100]
         }
       },
-      labels: [
-        // "01/01/2003",
-        // "02/01/2003",
-        // "03/01/2003",
-        // "04/01/2003",
-        // "05/01/2003",
-        // "06/01/2003",
-        // "07/01/2003",
-        // "08/01/2003",
-        // "09/01/2003",
-        // "10/01/2003",
-        // "11/01/2003"
-      ],
+      labels: [],
       markers: {
         size: 0
       },
       xaxis: {
         
       },
-      yaxis: {
-        min: 0,
-        labels: {
-          formatter: (val: number, indexData: any) => {
-            // console.log(index)
-            // console.log(typeof(indexData))
-            if(indexData && typeof(indexData) === 'object' && ('seriesIndex' in indexData) && indexData.seriesIndex === 2) {
+      yaxis: [
+        {
+          axisTicks: {
+            show: true,
+          },
+          axisBorder: {
+            show: true,
+            color: '#008FFB'
+          },
+          labels: {
+            style: {
+              colors: '#008FFB',
+            },
+            formatter: (val: number, indexData: any) => {
+              return Math.ceil(val);
+            }
+          },
+          title: {
+            text: "Impressions",
+            style: {
+              color: '#008FFB',
+            }
+          },
+          tooltip: {
+            enabled: true
+          }
+        },
+        {
+          seriesName: 'Clicks',
+          opposite: true,
+          axisTicks: {
+            show: true,
+          },
+          axisBorder: {
+            show: true,
+            color: '#00E396'
+          },
+          labels: {
+            style: {
+              colors: '#00E396',
+            },
+            formatter: (val: number, indexData: any) => {
+              return Math.ceil(val);
+            }
+          },
+          title: {
+            text: "Clicks",
+            style: {
+              color: '#00E396',
+            }
+          },
+        },
+        {
+          seriesName: 'Revenue',
+          opposite: true,
+          axisTicks: {
+            show: true,
+          },
+          axisBorder: {
+            show: true,
+            color: '#FEB019'
+          },
+          labels: {
+            style: {
+              colors: '#FEB019'
+            },
+            formatter: (val: number, indexData: any) => {
               return val.toFixed(2);
             }
-            return Math.ceil(val);
+          },
+          title: {
+            text: "Revenue",
+            style: {
+              color: '#FEB019',
+            }
           }
-        }
-      },
+        },
+      ],
       tooltip: {
         shared: true,
         intersect: false,

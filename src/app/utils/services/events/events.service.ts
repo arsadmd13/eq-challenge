@@ -24,4 +24,14 @@ export class EventsService {
     let url = `${environment.server}/events/daily`;
     return this.httpClient.get(url);
   }
+
+  hourlyEventsWithStats() {
+    let url = `${environment.server}/events-with-stats/hourly`;
+    return this.httpClient.get(url);
+  }
+
+  dailyEventsWithStats() {
+    let url = `${environment.server}/events-with-stats/daily`;
+    return this.httpClient.get(url);
+  }
 }

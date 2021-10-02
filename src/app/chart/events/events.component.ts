@@ -1,8 +1,5 @@
 import { ChangeDetectorRef, Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { ChartDataSets, ChartOptions } from 'chart.js';
 import { ChartComponent, ChartType } from 'ng-apexcharts';
-import { Label, MultiDataSet, Color, BaseChartDirective } from 'ng2-charts';
 import { DataService } from 'src/app/utils/services/data/data.service';
 import { EventsService } from 'src/app/utils/services/events/events.service';
 
@@ -26,12 +23,10 @@ export class EventsComponent implements OnInit {
 
   @ViewChild("hourlyEventsChart") chart: ChartComponent | undefined;
   @ViewChild("hourlyEventsDonutChart") donutChart: ChartComponent | undefined;
+  @ViewChild("eventsWithStatsChart") eventsWithStatsChart: ChartComponent | undefined;
 
   constructor(private eventsService: EventsService,
-              private dataService: DataService,
-              private cdref: ChangeDetectorRef) { 
-    
-  }
+              private dataService: DataService) {}
 
   @Input()
   dataType!: string;
@@ -121,6 +116,178 @@ export class EventsComponent implements OnInit {
     }
   };
 
+  public eventsWithStatsChartOptions: any = {
+    series: [
+      {
+        name: "Events",
+        type: "column",
+        data: []
+      },
+      {
+        name: "Impressions",
+        type: "column",
+        data: []
+      },
+      {
+        name: "Clicks",
+        type: "area",
+        data: []
+      },
+      {
+        name: "Revenue",
+        type: "area",
+        data: []
+      }
+    ],
+    chart: {
+      height: 550,
+      type: "line",
+      stacked: false
+    },
+    stroke: {
+      width: [0, 5, 5],
+      curve: "smooth"
+    },
+    plotOptions: {
+      bar: {
+        columnWidth: "70%"
+      }
+    },
+    fill: {
+      gradient: {
+        inverseColors: false,
+        shade: "light",
+        type: "vertical",
+        stops: [0, 100, 100, 100]
+      }
+    },
+    labels: [],
+    markers: {
+      size: 0
+    },
+    xaxis: {
+      
+    },
+    yaxis: [
+      {
+        seriesName: 'Events',
+        axisTicks: {
+          show: true,
+        },
+        axisBorder: {
+          show: true,
+          color: '#008FFB'
+        },
+        labels: {
+          style: {
+            colors: '#008FFB',
+          },
+          formatter: (val: number, indexData: any) => {
+            return Math.ceil(val);
+          }
+        },
+        title: {
+          text: "Events",
+          style: {
+            color: '#008FFB',
+          }
+        },
+        tooltip: {
+          enabled: true
+        }
+      },
+      {
+        seriesName: 'Impressions',
+        axisTicks: {
+          show: true,
+        },
+        axisBorder: {
+          show: true,
+          color: '#00E396'
+        },
+        labels: {
+          style: {
+            colors: '#00E396',
+          },
+          formatter: (val: number, indexData: any) => {
+            return Math.ceil(val);
+          }
+        },
+        title: {
+          text: "Impressions",
+          style: {
+            color: '#00E396',
+          }
+        },
+        tooltip: {
+          enabled: true
+        }
+      },
+      {
+        seriesName: 'Clicks',
+        opposite: true,
+        axisTicks: {
+          show: true,
+        },
+        axisBorder: {
+          show: true,
+          color: '#FEB019'
+        },
+        labels: {
+          style: {
+            colors: '#FEB019',
+          },
+          formatter: (val: number, indexData: any) => {
+            return Math.ceil(val);
+          }
+        },
+        title: {
+          text: "Clicks",
+          style: {
+            color: '#FEB019',
+          }
+        },
+        tooltip: {
+          enabled: true
+        }
+      },
+      {
+        seriesName: 'Revenue',
+        opposite: true,
+        axisTicks: {
+          show: true,
+        },
+        axisBorder: {
+          show: true,
+          color: '#FA5358'
+        },
+        labels: {
+          style: {
+            colors: '#FA5358'
+          },
+          formatter: (val: number, indexData: any) => {
+            // if(typeof(indexData) === 'object' && 'seriesIndex' in indexData && indexData.seriesIndex === 3)
+              return val.toFixed(2);
+            // return val;
+          }
+        },
+        title: {
+          text: "Revenue",
+          style: {
+            color: '#FA5358',
+          }
+        },
+        tooltip: {
+          enabled: true
+        }
+      },
+    ],
+    tooltip: {
+      shared: true,
+      intersect: false,
+    }
+  };
+
   isLoading = false;
   lstPoint = 0;
   focusedDate: any;
@@ -142,6 +309,12 @@ export class EventsComponent implements OnInit {
         break;
       case 'ed':
         this.initDailyEventsChart();
+        break;
+      case 'esh':
+        this.initEventsStatsChart();
+        break;
+      case 'esd':
+        this.initEventsStatsChart();
         break;
     }
   }
@@ -187,9 +360,9 @@ export class EventsComponent implements OnInit {
               $.chart?.zoomX(d2.getTime(), d3.getTime());
             }
           },
-          mouseLeave: function(event: any, chartContext: any, config: any) {
-            $.chart?.resetSeries()
-          }
+          // mouseLeave: function(event: any, chartContext: any, config: any) {
+          //   $.chart?.resetSeries()
+          // }
         }
       },
       annotations: {
@@ -378,171 +551,44 @@ export class EventsComponent implements OnInit {
     )
   }
 
+  initEventsStatsChart() {
+    this.isLoading = true;
+    // console.log
+    // (this.isLoading)
+    // return;
+    let fetchMethod = this.currentDataType === 'esh' ? this.eventsService.hourlyEventsWithStats() : this.eventsService.dailyEventsWithStats();
+    this.eventsWithStatsChartOptions['series'][0]['data'] = [];
+    this.eventsWithStatsChartOptions['series'][1]['data'] = [];
+    this.eventsWithStatsChartOptions['series'][2]['data'] = [];
+    this.eventsWithStatsChartOptions['series'][3]['data'] = [];
+    fetchMethod.subscribe(
+      (res: any) => {
+        console.log('data')
+        res.forEach((data: any) => {
+          let date = new Date(data.date);
+          date.toLocaleString('en-US', { timeZone: "UTC" })
+          date.setUTCHours(data.hour || 0);
+          date.setUTCMinutes(0);
+          this.eventsWithStatsChartOptions['series'][0]['data'].push(data.events);
+          this.eventsWithStatsChartOptions['series'][1]['data'].push(data.impressions);
+          this.eventsWithStatsChartOptions['series'][2]['data'].push(data.clicks);
+          this.eventsWithStatsChartOptions['series'][3]['data'].push(data.revenue);
+          this.eventsWithStatsChartOptions['labels'].push(
+            `${("0" + date.getUTCDate()).substr(-2)}-${("0" + (date.getUTCMonth() + 1)).substr(-2)}-${date.getUTCFullYear()} ${this.currentDataType === 'esh' ? ('0' + date.getUTCHours()).substr(-2) + ':00' : ''}`
+          )
+        })
+        this.isLoading = false;
+      }, (err: any) => {
+        console.log(err)
+      }
+    )
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes.dataType && changes.dataType.currentValue 
         && changes.dataType.currentValue !== changes.dataType.previousValue) {
+          console.log("HHS", changes)
       this.initChart();
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // public polarAreaChartLabels: Label[] = ['Download Sales', 'In-Store Sales', 'Mail Sales', 'Telesales', 'Corporate Sales'];
-  // public polarAreaChartData: SingleDataSet = [300, 500, 100, 40, 120];
-//   public polarAreaLegend = true;
-//   public doughnutChartLabels: Label[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
-//   public doughnutChartData: MultiDataSet = [
-//     [350, 450, 100],
-//     [50, 150],
-//     [250, 130, 70],
-//   ];
-//   public doughnutChartType: ChartType = 'doughnut';
-
-//   // public polarAreaChartType: ChartType = 'polarArea';
-
-//   // constructor() { }
-
-//   // ngOnInit(): void {
-//   // }
-
-//   // events
-//   public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
-//     console.log(event, active);
-//   }
-
-//   public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
-//     // console.log(event, active);
-//   }
-
-//   public lineChartData: ChartDataSets[] = [
-//     { data: [], label: 'Series A' },
-//   ];
-//   public lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-//   public lineChartOptions: (ChartOptions & { annotation: any }) = {
-//     responsive: true,
-//     scales: {
-//       // We use this empty structure as a placeholder for dynamic theming.
-//       xAxes: [{}],
-//       yAxes: [
-//         {
-//           id: 'y-axis-0',
-//           position: 'left',
-//         },
-//         {
-//           id: 'y-axis-1',
-//           position: 'right',
-//           gridLines: {
-//             color: 'rgba(255,0,0,0.3)',
-//           },
-//           ticks: {
-//             fontColor: 'red',
-//           }
-//         }
-//       ]
-//     },
-//     annotation: {
-//       annotations: [
-//         {
-//           type: 'line',
-//           mode: 'vertical',
-//           scaleID: 'x-axis-0',
-//           value: 'March',
-//           borderColor: 'orange',
-//           borderWidth: 2,
-//           label: {
-//             enabled: true,
-//             fontColor: 'orange',
-//             content: 'LineAnno'
-//           }
-//         },
-//       ],
-//     },
-//   };
-//   public lineChartColors: Color[] = [
-//     { // grey
-//       backgroundColor: 'rgba(148,159,177,0.2)',
-//       borderColor: 'rgba(148,159,177,1)',
-//       pointBackgroundColor: 'rgba(148,159,177,1)',
-//       pointBorderColor: '#fff',
-//       pointHoverBackgroundColor: '#fff',
-//       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-//     },
-//     { // dark grey
-//       backgroundColor: 'rgba(77,83,96,0.2)',
-//       borderColor: 'rgba(77,83,96,1)',
-//       pointBackgroundColor: 'rgba(77,83,96,1)',
-//       pointBorderColor: '#fff',
-//       pointHoverBackgroundColor: '#fff',
-//       pointHoverBorderColor: 'rgba(77,83,96,1)'
-//     },
-//     { // red
-//       backgroundColor: 'rgba(255,0,0,0.3)',
-//       borderColor: 'red',
-//       pointBackgroundColor: 'rgba(148,159,177,1)',
-//       pointBorderColor: '#fff',
-//       pointHoverBackgroundColor: '#fff',
-//       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-//     }
-//   ];
-//   public lineChartLegend = true;
-//   public lineChartType: ChartType = 'line';
-//   public lineChartPlugins = [];
-
-//   @ViewChild('BaseChartDirective', { static: true }) ngchart: BaseChartDirective | undefined;
-
-//   // constructor() { }
-
-//   // ngOnInit(): void {
-//   // }
-
-//   public randomize(): void {
-//     for (let i = 0; i < this.lineChartData.length; i++) {
-//       //@ts-ignore
-//       for (let j = 0; j < this.lineChartData[i].data.length; j++) {
-//       //@ts-ignore
-//         this.lineChartData[i].data[j] = this.generateNumber(i);
-//       }
-//     }
-//     this.ngchart?.update();
-//   }
-
-//   private generateNumber(i: number): number {
-//     return Math.floor((Math.random() * (i < 2 ? 100 : 1000)) + 1);
-//   }
-
-
-//   public hideOne(): void {
-//     const isHidden = this.ngchart?.isDatasetHidden(1);
-//     this.ngchart?.hideDataset(1, !isHidden);
-//   }
-
-//   public pushOne(): void {
-//     this.lineChartData.forEach((x, i) => {
-//       const num = this.generateNumber(i);
-//       const data: number[] = x.data as number[];
-//       data.push(num);
-//     });
-//     this.lineChartLabels.push(`Label ${this.lineChartLabels.length}`);
-//   }
-
-//   public changeColor(): void {
-//     this.lineChartColors[2].borderColor = 'green';
-//     this.lineChartColors[2].backgroundColor = `rgba(0, 255, 0, 0.3)`;
-//   }
-
-//   public changeLabel(): void {
-//     this.lineChartLabels[2] = ['1st Line', '2nd Line'];
-//   }
-// }

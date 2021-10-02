@@ -1,23 +1,33 @@
-<!-- <p>events works!</p> -->
 <div class="master-container">
     <div class="line-chart hourly-events" id="hourly-events-chart" *ngIf="currentDataType === 'ed' && !isLoading">
       <div>
         <span>Events Daily Chart</span>
-        <!-- <apx-chart #dailyEventsChart *ngIf="isLoading"
-          [series]="hourlyEventsChartOptions.series"
-          [chart]="hourlyEventsChartOptions.chart"
-          [xaxis]="hourlyEventsChartOptions.xaxis"
-          [dataLabels]="hourlyEventsChartOptions.dataLabels"
-          [grid]="hourlyEventsChartOptions.grid"
-          [stroke]="hourlyEventsChartOptions.stroke"
-          [title]="hourlyEventsChartOptions.title"
-        ></apx-chart> -->
         <apx-chart
             [series]="dailyEventsChartOptions.series"
             [chart]="dailyEventsChartOptions.chart"
             [dataLabels]="dailyEventsChartOptions.dataLabels"
             [plotOptions]="dailyEventsChartOptions.plotOptions"
             [xaxis]="dailyEventsChartOptions.xaxis"
+        ></apx-chart>
+      </div>
+      <div class="info">
+        <small>Click on a datapoint to know more.</small>
+      </div>
+    </div>
+    <div class="line-chart hourly-events" id="hourly-events-chart" *ngIf="(currentDataType === 'esh' || currentDataType === 'esd') && !isLoading">
+      <div>
+        <span>Events with Stats Chart</span>
+        <apx-chart #eventsWithStatsChart
+            [series]="eventsWithStatsChartOptions.series"
+            [chart]="eventsWithStatsChartOptions.chart"
+            [yaxis]="eventsWithStatsChartOptions.yaxis"
+            [xaxis]="eventsWithStatsChartOptions.xaxis"
+            [labels]="eventsWithStatsChartOptions.labels"
+            [stroke]="eventsWithStatsChartOptions.stroke"
+            [plotOptions]="eventsWithStatsChartOptions.plotOptions"
+            [markers]="eventsWithStatsChartOptions.markers"
+            [fill]="eventsWithStatsChartOptions.fill"
+            [tooltip]="eventsWithStatsChartOptions.tooltip"
         ></apx-chart>
       </div>
       <div class="info">
@@ -59,18 +69,3 @@
     </div>
     <app-spinner *ngIf="isLoading"></app-spinner>
 </div>
-    <!-- <div>
-      <div>
-        <div style="display: block">
-          <canvas baseChart
-          [datasets]="lineChartData"
-          [labels]="lineChartLabels"
-          [options]="lineChartOptions"
-          [colors]="lineChartColors"
-          [legend]="lineChartLegend"
-          [chartType]="lineChartType"
-          [plugins]="lineChartPlugins"
-          (chartHover)="chartHovered($event)"></canvas>
-        </div>
-      </div>
-    </div> -->

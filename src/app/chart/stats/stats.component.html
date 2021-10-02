@@ -2,10 +2,6 @@
     <div class="line-chart daily-stats" id="daily-stats-chart" *ngIf="!isLoading">
       <div>
         <span>Stats Daily Chart</span>
-        <!-- <div class="records-input">
-            <input  type="text" placeholder="Search">
-            <button></button>
-        </div> -->
         <apx-chart #dailyEventsChart
             [series]="dailyStatsChartOptions.series"
             [chart]="dailyStatsChartOptions.chart"
