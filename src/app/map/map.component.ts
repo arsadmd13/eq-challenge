@@ -81,10 +81,10 @@ export class MapComponent implements OnInit {
 
   fetchLocations() {
     let leaflet_marker_cluster = L.markerClusterGroup();
-    this.poiService.poiData().subscribe(
+    this.poiService.poiWithEvents().subscribe(
       (res: any) => {
         res.forEach((data: any) => {
-          //Google Map Marker
+          // Google Map Marker
           let marker: any = {
             position: {
               lat: data.lat,
@@ -98,14 +98,18 @@ export class MapComponent implements OnInit {
             icon: this.getIcon(data.name)
           }
           this.google_map_markers.push(marker);
-          //Leaflet Marker
+          // Leaflet Marker
           let leaflet_marker = L.marker([data.lat, data.lon], {
             icon: L.icon({
               iconUrl: 'assets/marker-icon.png',
               shadowUrl: 'assets/marker-shadow.png'
             })
           });
-          leaflet_marker.bindPopup(data.name);
+          leaflet_marker.bindPopup(
+            "<b>" + data.name + "</b>" +
+            "<br>Events: " + data.events +
+            "<br>Revenue: " + Number(data.revenue).toFixed(2)
+          );
           leaflet_marker_cluster.addLayer(leaflet_marker);
         })
         leaflet_marker_cluster.addTo(this.leaflet_map)

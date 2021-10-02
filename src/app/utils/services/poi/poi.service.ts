@@ -13,4 +13,9 @@ export class PoiService {
     let url = `${environment.server}/poi`;
     return this.httpClient.get(url);
   }
+
+  poiWithEvents() {
+    let url = `${environment.server}/poi-with-events`;
+    return this.httpClient.get(url);
+  }
 }
