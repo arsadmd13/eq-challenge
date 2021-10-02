@@ -42,3 +42,22 @@ select {
 .search-error {
     color: #f54242;
 }
+
+.input-container {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    input {
+        width: 300px;
+    }
+
+    @media screen and (max-width: 600px) {
+        flex-direction: column;
+        input {
+            width: 300px;
+        }
+    }
+}
